@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+	<head>
+		<meta charset="utf-8">
+		<title>招聘抽奖</title>
+		<meta name="viewport" content="width=640, user-scalable=no">
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				list-style: none;
+			}
+			
+			.rotary {
+				position: relative;
+				width: 562px;
+				height: 562px;
+				margin-left: -281px;
+				top: 108px;
+				left: 50%;
+				/* background: url(img/pan.png) no-repeat; */
+			}
+			
+			.rotaryArrow {
+				position: absolute;
+				left: 200px;
+				top: 187px;
+				width: 163px;
+				height: 184px;
+				cursor: pointer;
+				background: url(img/arrow2.png) no-repeat;
+			}
+			
+			.result {
+				display: none;
+				position: absolute;
+				left: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				background: rgba(0, 0, 0, 0.7) 0 0 no-repeat;
+			}
+			
+			.result .r-content {
+				position: absolute;
+			}
+			
+			.result a {
+				display: inline-block;
+				position: absolute;
+				height: 87px;
+			}
+			
+			.result .a-replay {
+				width: 380px;
+				left: 2px;
+				top: 433px;
+				opacity: 0;
+			}
+			
+			.result .a-ling {
+				width: 185px;
+				left: 2px;
+				top: 433px;
+				opacity: 0;
+			}
+			
+			.a-sure {
+				width: 380px;
+				left: 2px;
+				top: 433px;
+				opacity: 0;
+			}
+			
+			.result .give-up {
+				width: 185px;
+				left: 198px;
+				top: 433px;
+				opacity: 0;
+			}
+			
+			.result p {
+				padding: 275px 15px 0;
+				font: 20px "Microsoft Yahei";
+				color: #ffea00;
+				text-align: center;
+			}
+			
+			.result em {
+				color: #ffea76;
+				font-style: normal;
+			}
+			
+			.rimgbox {
+				position: absolute;
+				left: 132px;
+				top: 143px;
+			}
+			
+			#resultImg {}
+			
+			.pan-instru {
+				position: absolute;
+				top: 700px;
+				left: 50%;
+				margin-left: -287px;
+				z-index: -1;
+			}
+			
+			.logo {
+				position: absolute;
+				left: 30px;
+				top: 1px;
+			}
+			
+			.z-plane {
+				position: absolute;
+				top: 50px;
+				left: 280px;
+			}
+			
+			.z-cloud {
+				position: absolute;
+				top: 120px;
+				left: 30px;
+			}
+			.prize-close{
+				    position: absolute;
+    right: 0px;
+    top: 0px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="web_bg" style="position:absolute; width:100%; height:100%; z-index:-1">
+			<img style="position:fixed;" src="img/bg3.png" rel="external nofollow" height="100%" width="100%" />
+		</div>
+		<div class="logo">
+			<img src="img/logo.png" />
+		</div>
+		<div class="z-plane">
+			<img src="img/z-plane.png" />
+		</div>
+		<div class="z-cloud">
+			<img src="img/z-cloud.png" />
+		</div>
+		<!-- pan start  -->
+		<div class="rotary">
+			<div class="rotaryBg">
+				<img src="img/pan.png" />
+			</div>
+			<div class="rotaryArrow" id="rotaryArrow"></div>
+		</div>
+		<!-- pan end -->
+		<div class="result" id="result">
+			<div class="r-content">
+				<!--<p id="resultTxt"></p>-->
+				<!-- <a href="javascript:" id="resultBtn" title="关闭">关闭</a> -->
+				<div class="rimgbox">
+					<img src="img/close.png"/ class="prize-close">
+					<img src="img/fjp.png" alt="" id="resultImg">
+				</div>
+				<a href="http://www.ynzhiwu.com/xpzp" title="" class="a-replay">去评价（回首页）</a>
+				<a href="submit.html" title="" class="a-ling">去领奖</a>
+				<a style="display: none;" href="#" title="" class="give-up">放弃</a>
+				<a href="http://www.ynzhiwu.com/xpzp" title="" class="a-sure">确 定</a>
+			</div>
+		</div>
+		<div class="pan-instru">
+			<img src="img/pan-instru.png" />
+		</div>
+
+		<script src="js/jquery-1.8.3.min.js"></script>
+		<script src="js/jquery.rotate.min.js"></script>
+		<script>
+			$(function() {
+
+				var p1Count = 1;
+				var p2Count = 1;
+				var p3Count = 1;
+				var p4Count = 1;
+				var p5Count = 1;
+				var p6Count = 1;
+				var p7Count = 1;
+				var p8Count = 1;
+				var p9Count = 1;
+
+				var $rotaryArrow = $('#rotaryArrow');
+				var $result = $('#result');
+				var $resultTxt = $('#resultTxt');
+				var $resultImg = $('#resultImg');
+				var $rotaryBg = $(".rotaryBg");
+				var chance = 99;
+				var roll_total = 99;
+				var ajaxSuccess = true;
+				var winning = 0; //ys
+
+				//var chance = 3;
+				//        var roll_total = 0;
+				//        var ajaxSuccess = false;
+				//        var winning = 0;
+
+				$rotaryArrow.click(function() {
+
+					//					if (winning) {
+					//						$('.r-content').css('background', "url(img/winning.png)");
+					//						$resultImg.hide();
+					//						$resultTxt.html('');
+					//						$result.show();
+					//						$('.a-ling').hide();
+					//						$('.a-replay').hide();
+					//						$('.give-up').hide();
+					//						$('.a-sure').show();
+					//
+					//						return false;
+					//					}
+					//alert(chance);
+					if (chance == 0) {
+						//alert(roll_total+":"+chance);
+						/*
+				if(roll_total <3){
+                    $('.r-content').css('background',"url(img/nochance1.png)");
+                }else{
+                    $('.r-content').css('background',"url(img/nochance.png)");
+                }
+				*/
+						//						$('.r-content').css('background', "url(img/nochance1.png)");
+						//						$resultImg.hide();
+						//						$resultTxt.html('');
+						//						$result.show();
+						//						$('.a-ling').hide();
+						//						$('.a-replay').hide();
+						//						$('.give-up').hide();
+						//						$('.a-sure').show();
+					} else {
+						chance--;
+
+						var Base = 500;
+						var p1Base = 1;
+						var p2Base = 2;
+						var p3Base = 4;
+						var p4Base = 60;
+						var p5Base = 200;
+
+						var p = 'null';
+
+						var random = getRandom(Base);
+
+						if (random == p1Base && p1Count > 0) {
+							//曼谷往返
+							p = 'p1';
+						} else if (random <= p2Base && p2Count > 0) {
+							//KtoM
+							p = 'p2';
+						} else if (random <= p3Base && p3Count > 0) {
+							//MtoK
+							p = 'p3';
+						} else if (random <= p4Base && p4Count > 0) {
+							//电影
+							p = 'p4';
+						} else if (random <= p5Base && p5Count > 0) {
+							//麦当劳
+							p = 'p5';
+						}
+
+						//p="p2";
+
+						//						var url = "<?php echo $root;?>" + 'ajax.php';
+						//						jQuery.ajax({
+						//							url: url,
+						//							data: {
+						//								request: 'lucky',
+						//								p: p
+						//							},
+						//							type: "POST",
+						//							// 期待的返回值类型
+						//							dataType: "json",
+						//							complete: function(xhr, result) {
+						//								if (!xhr) {
+						//									alert('网络连接失败！');
+						//									return false;
+						//								}
+						//
+						//								var text = xhr.responseText;
+						//								if (!text) {
+						//									alert('网络错误！');
+						//									return false;
+						//								}
+						//
+						//								var json = eval("(" + text + ")");
+						//
+						//								if (json.result == 'failed') {
+						//									return false;
+						//								} else if (json.result == 'success') {
+						//									ajaxSuccess = true;
+						//								}
+						//							}
+						//			});
+						p = 'null';
+						console.log(p);
+						switch (p) {
+							case 'p1':
+								rotateFunc(1, 280, 'twiceJP');
+								break;
+							case 'p2':
+								rotateFunc(2, 23, 'KtoM');
+								break;
+							case 'p3':
+								rotateFunc(3, 160, 'MtoK');
+								break;
+							case 'p4':
+								rotateFunc(4, 308, 'dianyingjuan');
+								break;
+							case 'p5':
+								rotateFunc(5, 81, 'maidanglao');
+								break;
+							default:
+								rotateFunc(6, 218, 'fail');
+						}
+
+					}
+				});
+
+				var rotateFunc = function(awards, angle, imgsrc) { //awards:奖项，angle:奖项对应的角度
+					$rotaryBg.stopRotate();
+					$rotaryBg.rotate({
+						angle: 0,
+						duration: 5000,
+						animateTo: angle + 1080, //angle是图片上各奖项对应的角度，1440是让指针固定旋转4圈
+						callback: function() {
+							if (angle == 252) {
+//								$('.r-content').css('background', "url(img/thank.png)");
+								$resultImg.hide();
+								$resultImg.hide();
+								$resultTxt.html('');
+								$result.show();
+//								$('.a-ling').hide();
+//								$('.a-replay').show();
+//								$('.give-up').hide();
+//								$('.a-sure').hide();
+							} else {
+								if (ajaxSuccess) {
+//									$('.r-content').css('background', "url(img/zhong.png)");
+									$resultImg.attr('src', 'img/' + imgsrc + '.png');
+									$resultImg.show();
+									//									$resultTxt.html(text);
+									$result.show();
+									
+								}
+							}
+						}
+					});
+				};
+				
+					$(".prize-close").click(function () {
+						$(".result").hide();
+						
+					});
+
+				//				$('.give-up').click(function() {
+				//					if (confirm('放弃可以重新抽奖一次，确认放弃吗？') == true) {
+				//						var url = "<?php echo $root;?>" + 'ajax.php';
+				//						jQuery.ajax({
+				//							url: url,
+				//							data: {
+				//								request: 'give-up'
+				//							},
+				//							type: "POST",
+				//							// 期待的返回值类型
+				//							dataType: "json",
+				//							complete: function(xhr, result) {
+				//								if (!xhr) {
+				//									alert('网络连接失败！');
+				//									return false;
+				//								}
+				//
+				//								var text = xhr.responseText;
+				//								if (!text) {
+				//									alert('网络错误！');
+				//									return false;
+				//								}
+				//
+				//								var json = eval("(" + text + ")");
+				//								if (json.result == 'success') {
+				//									ajaxSuccess = true;
+				//									$result.hide();
+				//								}
+				//							}
+				//						});
+				//					} else {
+				//						ajaxSuccess = false;
+				//					}
+				//				});
+
+				function getRandom(n) {
+					return Math.floor(Math.random() * n + 1)
+				}
+			});
+		</script>
+
+		<!--<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>-->
+		<!--<script>
+
+    var title = "祥鹏航空明星产品体验“总监”招聘——抽奖";
+    var des = '参与“祥鹏航空明星产品体验总监”活动，成功点评好友即可参与抽奖，iwatch、飞机模型、百元购物卡、高级保温杯等430个大奖等你领取!';
+    var logo = 'http://www.ynzhiwu.com/xpzpgames/logo.png';
+    var link = 'http://www.ynzhiwu.com/xpzpgames/index.php';
+    wx.config({
+        //debug: true,
+        appId: '<?php echo $signPackage["appId"];?>',
+        timestamp: <?php echo $signPackage["timestamp"];?>,
+        nonceStr: '<?php echo $signPackage["nonceStr"];?>',
+        signature: '<?php echo $signPackage["signature"];?>',
+        jsApiList: [
+            'onMenuShareTimeline',
+            'onMenuShareAppMessage'
+        ]
+    });
+
+    wx.ready(function(){
+
+        wx.onMenuShareTimeline({
+            title: title, // 分享标题
+            link: link, // 分享链接
+            imgUrl: 'http://www.ynzhiwu.com/xpzpgames/logo.jpg', // 分享图标
+            success: function () {
+                // 用户确认分享后执行的回调函数
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+            }
+        });
+
+        wx.onMenuShareAppMessage({
+            title: title, // 分享标题
+            desc: des, // 分享描述
+            link: link, // 分享链接
+            imgUrl: 'http://www.ynzhiwu.com/xpzpgames/logo.jpg', // 分享图标
+            type: '', // 分享类型,music、video或link，不填默认为link
+            dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+            success: function () {
+                // 用户确认分享后执行的回调函数
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+            }
+        });
+    });
+
+
+
+</script>-->
+	</body>
+
+</html>

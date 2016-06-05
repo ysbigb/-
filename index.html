@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=640,user-scalable=no">
+		<title>介绍页面</title>
+		<link rel="stylesheet" type="text/css" href="css/main.css" />
+		<link rel="stylesheet" type="text/css" href="css/animate.css" />
+		<script src="js/jquery-2.1.0.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/hammer.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery.transit.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+
+	<body>
+		<div class="mainbox">
+			<div class="f-pan-mask">
+				<img src="img/f-pan-mask.png" />
+			</div>
+			<div class="pagebox">
+				<div class="section animated bounceInDown" id="se0">
+					<img src="img/0txt.png" />
+				</div>
+				<div class="section animated bounceInLeft" id="se1">
+					<img src="img/1txt.png" />
+				</div>
+				<div class="section animated bounceInRight" id="se2">
+					<img src="img/2txt.png" />
+				</div>
+				<div class="section animated zoomInUp" id="se3">
+					<img src="img/3txt.png" />
+				</div>
+			</div>
+
+			<div class="logo">
+				<img src="img/logo.png" />
+			</div>
+			<div class="f-pan" id="ball">
+				<img src="img/f-pan.png" />
+			</div>
+
+			<div class="plane">
+				<img src="img/Bangkok.png" />
+				<img class="pl animated infinite pulse" src="img/plane1.png" />
+			</div>
+			<div class="cloud">
+				<img src="img/cloud.png" />
+			</div>
+		</div>
+
+		<script type="text/javascript">
+			var hammertime = new Hammer(document.getElementById("ball"));
+			var n = 0;
+			console.log(n);
+
+			function switchPage(page) {
+				var _page = page;
+				switch (_page) {
+					case 1:
+						$("#se1").show().siblings().hide();
+						break;
+					case 2:
+						$("#se2").show().siblings().hide();
+						break;
+					case 3:
+						$("#se3").show().siblings().hide();
+						break;
+					default:
+						$("#se0").show().siblings().hide();
+						break;
+				}
+			}
+			hammertime.on("panend", function(e) {
+				//控制台输出
+				var r = e.deltaX;
+				if (r > 0) {
+					$("#ball").css({
+						rotate: '+=90'
+					});
+					n == 0 ? n = 3 : n = n - 1;
+					switchPage(n);
+				} else {
+					$("#ball").css({
+						rotate: '-=90'
+					})
+					n == 3 ? n = 0 : n = n + 1;
+					switchPage(n);
+				}
+				console.log(n);
+			});
+		</script>
+
+	</body>
+
+</html>

@@ -1,0 +1,6 @@
+﻿$str = var_export($data, true);
+ if($fd = @fopen("log/php.log", "a")) {
+   fputs($fd, $str);
+   fclose($fd);
+}
+

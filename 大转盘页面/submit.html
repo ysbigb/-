@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=640, user-scalable=no">
+		<title>祥鹏航空明星产品体验“总监”招聘</title>
+        <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body{
+            background-color: #fff;
+            font-family:"微软雅黑";
+            font-weight: lighter;
+            color: #666666;
+        }
+        p{
+            font-size: 24px;
+            margin-top:42px;
+        }
+        input[type=text]{
+             font-family:"微软雅黑";
+            font-weight: lighter;
+            width:100%;
+            border: none;
+            background-color: #f3f3f3;
+            font-size:32px;
+            /*line-height: 2;*/
+            height:64px;
+            border-radius: 5px;
+            margin-top:15px;
+        }
+        textarea{
+             font-family:"微软雅黑";
+            font-weight: lighter;
+             width:100%;
+            border: none;
+            background-color: #f3f3f3;
+            font-size:32px;
+            /*line-height: 2;*/
+            height:108px;
+            border-radius: 5px;
+            margin-top:15px;
+        }
+        button{
+            border:none;
+            background-color: transparent;
+            margin-top:66px;
+        }
+        .ht{
+            font-size: 28px;
+            color: #fe0006;
+            margin-top: 0;
+        }
+        .sub-c{
+                width:640px;
+                margin:0 auto;
+                padding:96px 42px 0;
+            }
+        .foot{
+            position:absolute;
+            bottom: -1px;
+            width:640px;
+            margin:0 auto;
+            z-index: -1;
+        }
+		.error{
+		color:red;
+		}
+        </style>
+    </head>
+    <body>
+    <div class="sub-c">
+        <p class="ht">
+            请务必填写真实有效信息,便于我们核对及邮寄奖品
+            实物礼品邮费自理哦!
+        </p>
+        <form action="http://www.ynzhiwu.com/xpzpgames/ajax.php" method="post" id="myform">
+            <p>姓名</p>
+            <input type="text" name="name" value="" placeholder="">
+            <p>联系电话(手机)</p>
+            <input type="text" name="phone" value="" placeholder="">
+            <p>收货地址</p>
+            <!-- <input type="text" name="address" value="" placeholder="" style="line-height:1;height:108px"> -->
+            <textarea name="address"></textarea>
+
+            <input type="hidden" name="request" value="info-submit">
+
+            <div class="btn-g">
+               <button type="submit">
+                   <img src="img/subbtn.png" alt="">
+               </button>
+
+                <button class="give-up" type="reset" style="float:right">
+                   <img src="img/giveup-btn.png" alt="">
+               </button>
+            </div>
+        </form>
+    </div>
+    <div style="margin:0 auto;width:640px;">
+        <img src="img/foot.png" alt="" class="foot">
+    </div>
+
+    <script src="js/jquery-1.8.3.min.js"></script>
+    <script src="js/jquery.validate.min.js"></script>
+    <script>
+        $(function(){
+            $("#myform").validate({
+                debug: true, //调试模式取消submit的默认提交功能
+                //errorClass: "label.error", //默认为错误的样式类为：error
+                focusInvalid: false, //当为false时，验证无效时，没有焦点响应
+                onkeyup: false,
+                submitHandler: function(form){   //表单提交句柄,为一回调函数，带一个参数：form
+                    form.submit();   //提交表单
+                },
+
+                rules:{
+                    name:{
+                        required:true
+                    },
+                    phone:{
+                        required:true,
+                        digits:true
+                    },
+                    address:{
+                        required:true
+                    }
+                },
+                messages:{
+                    name:{
+                        required:"必填"
+                    },
+                    phone:{
+                        required:"必填",
+                        digits:"请填写正确的电话号码"
+                    },
+                    address:{
+                        required:"必填"
+                    }
+                }
+            });
+
+            $('.give-up').click(function(){
+                if(confirm('放弃可以重新抽奖一次，确认放弃吗？') == true){
+                    var url = 'http://www.ynzhiwu.com/xpgame/ajax.php';
+                    jQuery.ajax( {
+                        url : url,
+                        data: {request:'give-up'},
+                        type : "POST",
+                        // 期待的返回值类型
+                        dataType: "json",
+                        complete : function(xhr, result) {
+                            if(!xhr){
+                                alert('网络连接失败！');
+                                return false;
+                            }
+
+                            var text = xhr.responseText;
+                            if(!text){
+                                alert('网络错误！');
+                                return false;
+                            }
+
+                            var json = eval("("+text+")");
+
+                            if(json.result == 'success')
+                            {
+                                window.location.href='http://www.ynzhiwu.com/xpgame/zhuanpan.php';
+                            }else{
+                                alert('放弃失败！');
+                            }
+                        }
+                    });
+                }else{
+                }
+            });
+        });
+    </script>
+    </body>
+</html>
